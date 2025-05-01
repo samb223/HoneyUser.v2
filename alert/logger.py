@@ -1,5 +1,5 @@
-import json
 import os
+import json
 from datetime import datetime
 
 class Logger:
@@ -10,10 +10,12 @@ class Logger:
 
     def log_event(self, event):
         timestamp = datetime.utcnow().isoformat()
+        entry = {"timestamp": timestamp, **event}
+
         if self.format == 'json':
             with open(self.file, "a") as f:
-                json.dump({"timestamp": timestamp, **event}, f)
-                f.write("\n")
+                json.dump(entry, f)
+                f.write("\n\n")  # Add newline for readability
         else:
             with open(self.file, "a") as f:
-                f.write(f"[{timestamp}] {event}\n")
+                f.write(f"[{timestamp}] {event}\n\n")
