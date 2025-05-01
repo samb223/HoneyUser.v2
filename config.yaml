@@ -1,0 +1,30 @@
+user:
+  name: honeyuser
+  password: Dec0yP@ss!
+  groups: ["users"]
+  shell: /bin/bash
+  home: /home/honeyuser
+
+activity:
+  simulate_browsing: true
+  simulate_shell: true
+  interval_minutes: 15
+
+monitor:
+  enabled: true
+  methods:
+    - auth_logs
+    - wmi_events
+
+alerts:
+  email_enabled: false
+  email:
+    smtp_server: smtp.example.com
+    port: 587
+    username: alert@example.com
+    password: yourpassword
+    to: admin@example.com
+
+logging:
+  file: logs/honeyuser.log
+  format: json
