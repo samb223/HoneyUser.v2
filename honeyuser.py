@@ -5,7 +5,7 @@ import time
 import yaml
 from platform import system
 from utils.helpers import load_config
-import osplatform as py_platform  # avoid name conflict
+import platform as py_platform  # avoid name conflict
 if py_platform.system() == "Windows":
     from osplatform import windows as platform_module
 elif py_platform.system() == "Linux":
