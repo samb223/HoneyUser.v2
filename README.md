@@ -1,7 +1,7 @@
-#Overview
+# Overview
 HoneyUser is a cross-platform Python tool designed to create decoy user accounts and simulate user activity to generate real, logged system events. It is specifically useful for monitoring systems for unauthorized access or unusual activity. This tool generates activity on a decoy account to mimic legitimate user actions and log events that can be monitored for security analysis.
 
-#Features
+# Features
 Decoy Account Creation: Simulate a user account (honeyuser) for generating realistic system activity.
 
 Simulate User Activity:
@@ -16,12 +16,12 @@ Cross-Platform: Works on both Windows and Linux systems.
 
 Logging: Logs events triggered by the decoy account into a file for analysis.
 
-#Requirements
+# Requirements
 Python 3.6 or higher
 
 Windows or Linux OS
 
-#Python Libraries:
+# Python Libraries:
 The following Python libraries are required to run HoneyUser:
 
 wmi (for Windows event logging)
@@ -56,7 +56,7 @@ bash
 Copy
 Edit
 pip install -r requirements.txt
-#Configuration
+# Configuration
 The HoneyUser tool can be configured through the config.json file. Here is an example configuration:
 
 json
@@ -88,7 +88,7 @@ activity:
 
 "interval_minutes": Interval (in minutes) for how often user activity is simulated.
 
-#Usage
+# Usage
 Run the tool:
 
 bash
@@ -113,13 +113,13 @@ yaml
 Copy
 Edit
 2025-04-30 08:10:22 - [!] honeyuser triggered EventCode 4625: An account failed to log on.
-#Troubleshooting
+# Troubleshooting
 No events showing up in logs:
 
 Ensure that the honeyuser account exists on the system.
 
 Ensure that logs are enabled for the appropriate system events.
 
-#Permissions issues:
+# Permissions issues:
 
 For Linux, the tool may require root access to read system logs (/var/log/auth.log).
