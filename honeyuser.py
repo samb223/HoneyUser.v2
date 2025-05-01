@@ -57,7 +57,7 @@ def main():
         print("[+] Checking for events...")
         events = monitor.check_events()
         for event in events:
-            print(f"[!] Event detected: {event}")
+            #print(f"[!] Event detected: {event}")
             logger.log_event(event)
             if config['alerts']['email_enabled']:
                 print("[+] Sending alert email...")
