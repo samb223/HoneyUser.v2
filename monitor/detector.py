@@ -1,5 +1,6 @@
 import os
 import platform
+import wmi
 import subprocess
 
 class Monitor:
