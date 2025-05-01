@@ -29,4 +29,15 @@ class Logger:
         if self.console_output:
             print(f"[{timestamp}][{level.upper()}] {entry}")
 
+    def log_linux_auth_events(self, username):
+        try:
+            output = subprocess.check_output(
+                ["grep", username, "/var/log/auth.log"], stderr=subprocess.DEVNULL
+            ).decode(errors='ignore')
+
+            for line in output.strip().split("\n"):
+                self.log_event({"source": "auth.log", "message": line.strip()})
+        except Exception as e:
+            self.log_event({"source": "auth.log", "error": str(e)})
+
 
