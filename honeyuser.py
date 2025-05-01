@@ -23,8 +23,6 @@ def get_platform_module():
         return windows
     elif system() == "Linux":
         return linux
-    elif system() == "Darwin":
-        return macos
     else:
         raise NotImplementedError("Unsupported OS")
 
