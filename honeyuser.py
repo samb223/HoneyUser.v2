@@ -62,7 +62,7 @@ def main():
             if config['alerts']['email_enabled']:
                 print("[+] Sending alert email...")
                 emailer.send_alert(event)
-        time.sleep(10)
+        time.sleep(2)
 
 if __name__ == "__main__":
     main()
