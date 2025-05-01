@@ -59,8 +59,13 @@ def main():
     logger = Logger(config)
     emailer = Emailer(config)
 
-    print("[+] Starting event monitor...")
-    monitor = Monitor(config)
+    if platform.system() == "Windows":
+        print("[+] Starting event monitor...")
+        monitor = Monitor(config)
+        monitor.start()
+    else:
+        monitor = None
+
 
     # Start the activity simulation in a background thread
     activity_thread = threading.Thread(target=start_activity_simulation, args=(config,))
