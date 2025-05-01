@@ -20,7 +20,7 @@ class Monitor:
                     lines = f.readlines()
                     for line in lines[-50:]:
                         if self.username in line:
-                            print(f"[!] Suspicious activity for {self.username}: {line.strip()}")
+                            #print(f"[!] Suspicious activity for {self.username}: {line.strip()}")
                             events.append({"event": line.strip()})
             except FileNotFoundError:
                 print("[!] /var/log/auth.log not found. Is this a non-Debian system?")
