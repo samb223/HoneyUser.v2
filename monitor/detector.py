@@ -33,9 +33,11 @@ class Monitor:
                 import wmi
                 c = wmi.WMI()
                 query = (
-                    "SELECT * FROM Win32_NTLogEvent WHERE Logfile = 'Security' AND "
-                    "(EventCode = '4624' OR EventCode = '4625')"
-                )
+    "SELECT * FROM Win32_NTLogEvent WHERE Logfile = 'Security' AND "
+    "(EventCode = '4624' OR EventCode = '4625') AND "
+    "InsertionStrings LIKE '%{0}%' AND "
+    "LogonType = 2".format(self.username)
+)
                 # 4624 = Successful login, 4625 = Failed login
                 for event in c.query(query):
                     if self.username.lower() in str(event.InsertionStrings).lower():
