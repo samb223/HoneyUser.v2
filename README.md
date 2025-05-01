@@ -23,7 +23,7 @@ HoneyUser is a cross-platform security deception tool that creates a **decoy use
 
 ```bash
 git clone https://github.com/yourusername/HoneyUser.v2.git
-cd HoneyUser.v2
+cd HoneyUser.v2-main\HoneyUser.v2-main
 pip install -r requirements.txt
 ```
 ##  Usage
