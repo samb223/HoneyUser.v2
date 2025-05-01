@@ -1,5 +1,6 @@
-import wmi
 import platform
+if platform.system() == "Windows":
+    import wmi
 import time
 from alert.logger import Logger
 
