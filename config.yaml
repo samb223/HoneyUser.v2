@@ -14,7 +14,7 @@ monitor:
   enabled: true
   methods:
     - auth_logs
-    - wmi_events
+    #- wmi_events
 
 alerts:
   email_enabled: false
