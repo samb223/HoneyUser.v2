@@ -1,53 +1,50 @@
-import os
+import wmi
 import platform
+import time
 
 class Monitor:
     def __init__(self, config):
         self.config = config
         self.platform = platform.system()
-        self.username = config['user']['name']
 
     def start(self):
-        print("[*] Monitor started...")
+        print("Monitor started...")
+        while True:
+            self.check_events()
+            time.sleep(10)  # Wait for 10 seconds before checking again
 
     def check_events(self):
         events = []
-
-        if self.platform == "Linux":
-            print("[*] Checking /var/log/auth.log for suspicious activity...")
-            try:
-                with open("/var/log/auth.log", "r") as f:
-                    lines = f.readlines()
-                    for line in lines[-50:]:
-                        if self.username in line:
-                            #print(f"[!] Suspicious activity for {self.username}: {line.strip()}")
-                            events.append({"event": line.strip()})
-            except FileNotFoundError:
-                print("[!] /var/log/auth.log not found. Is this a non-Debian system?")
-            except Exception as e:
-                print(f"[!] Error reading auth.log: {e}")
-
-        elif self.platform == "Windows":
+        if self.platform == "Windows":
             print("[*] Querying Windows Security log via WMI...")
+            c = wmi.WMI()
+
+            # Query for failed logins or events related to the honeyuser account
+            query = """
+            SELECT * FROM Win32_NTLogEvent 
+            WHERE Logfile = 'Security' 
+            AND (EventCode = '4624' OR EventCode = '4625' OR EventCode = '4740' OR EventCode = '4688') 
+            AND Message LIKE '%honeyuser%'
+            """
+            
             try:
-                import wmi
-                c = wmi.WMI()
-                query = (
-    "SELECT * FROM Win32_NTLogEvent WHERE Logfile = 'Security' AND "
-    "(EventCode = '4624' OR EventCode = '4625') AND "
-    "InsertionStrings LIKE '%{0}%' AND "
-    "LogonType = 2".format(self.username)
-)
-                # 4624 = Successful login, 4625 = Failed login
-                for event in c.query(query):
-                    if self.username.lower() in str(event.InsertionStrings).lower():
-                        evt_str = f"[!] {self.username} triggered EventCode {event.EventCode}: {event.Message}"
-                        #print(evt_str)
-                        events.append({"event": evt_str})
-            except ImportError:
-                print("[!] 'wmi' module not found. Install it with: pip install wmi")
+                # Execute WMI query to get relevant log events
+                events = c.query(query)
+
+                if not events:
+                    print("[*] No relevant events found.")
+                else:
+                    for event in events:
+                        event_message = event.Message
+                        # Only log the message if it relates to the 'honeyuser' account
+                        if 'honeyuser' in event_message:
+                            #print(f"[!] honeyuser triggered {event.EventCode}: {event.Message}")
+
+                            # You can log this into a file or handle it further here
+                            with open('logs/honeyuser_event_log.txt', 'a') as log_file:
+                                log_file.write(f"{time.ctime()} - {event.Message}\n\n")
+
             except Exception as e:
                 print(f"[!] WMI query failed: {e}")
-
-        return events
-
+        else:
+            print("[!] Unsupported platform, only Windows is supported for WMI queries.")
