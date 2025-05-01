@@ -11,7 +11,7 @@ class Monitor:
         print("Monitor started...")
         while True:
             self.check_events()
-            time.sleep(10)  # Wait for 10 seconds before checking again
+            time.sleep(2)  # Wait for 10 seconds before checking again
 
     def check_events(self):
         events = []
