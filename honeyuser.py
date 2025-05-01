@@ -12,8 +12,6 @@ elif py_platform.system() == "Linux":
     from osplatform import linux as platform_module
 else:
     raise NotImplementedError("Unsupported OS")
-
-
 from activity.simulator import simulate_activity
 from monitor.detector import Monitor
 from alert.logger import Logger
