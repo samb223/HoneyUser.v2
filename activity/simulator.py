@@ -3,7 +3,8 @@ import time
 import platform
 import subprocess
 import ctypes
-import winreg
+if platform.system() == "Windows":
+    import winreg
 
 def simulate_activity(config):
     system = platform.system()
