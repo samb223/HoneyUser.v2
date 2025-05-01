@@ -10,8 +10,8 @@ def simulate_activity(config):
     system = platform.system()
     username = config['user']['name']
 
-    print(f"[+] Starting activity simulation for decoy user: {username}")
-    print(f"[+] Detected OS: {system}")
+    print(f"[+] Starting activity simulation for decoy user: {username}\n")
+    print(f"[+] Detected OS: {system}\n")
     
     # Determine the shell history file based on OS
     if system == "Windows":
