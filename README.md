@@ -1,125 +1,99 @@
-# Overview
-HoneyUser is a cross-platform Python tool designed to create decoy user accounts and simulate user activity to generate real, logged system events. It is specifically useful for monitoring systems for unauthorized access or unusual activity. This tool generates activity on a decoy account to mimic legitimate user actions and log events that can be monitored for security analysis.
+# 🐝 HoneyUser - Decoy User Activity Simulator
 
-# Features
-Decoy Account Creation: Simulate a user account (honeyuser) for generating realistic system activity.
+HoneyUser is a cross-platform security deception tool that creates a **decoy user** and simulates **realistic system activity** to lure and detect unauthorized access or malicious behavior.
 
-Simulate User Activity:
+> Supports both **Windows** and **Linux**, with OS-specific logging and simulation!
 
-Shell command history (e.g., ls, pwd, whoami).
+---
 
-Fake browsing activities (e.g., creating documents in the user’s "Documents" folder).
+##  Features
 
-Event Monitoring: Checks system logs (e.g., Windows Event Logs) for any failed login attempts or unusual activity related to the honeyuser account.
+-  Creates a fake decoy user account (`honeyuser`)
+-  Simulates activity:
+  - Command-line history
+  - File/document creation
+  - Fake browser artifacts
+-  Logs system-level authentication and session events
+-  Alerts via logs when suspicious actions are detected (Windows only)
+-  `exit` command to stop the tool gracefully
 
-Cross-Platform: Works on both Windows and Linux systems.
+---
 
-Logging: Logs events triggered by the decoy account into a file for analysis.
+##  Installation
 
-# Requirements
-Python 3.6 or higher
-
-Windows or Linux OS
-
-# Python Libraries:
-The following Python libraries are required to run HoneyUser:
-
-wmi (for Windows event logging)
-
-platform (standard library, no installation needed)
-
-os (standard library, no installation needed)
-
-time (standard library, no installation needed)
-
-subprocess (standard library, no installation needed)
-
-json (standard library, no installation needed)
-
-To install the necessary dependencies, you can use the following commands:
-
-bash
-Copy
-Edit
-pip install wmi
-#Installation
-Clone the repository:
-
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/HoneyUser.git
-cd HoneyUser
-Install dependencies:
-
-bash
-Copy
-Edit
+```bash
+git clone https://github.com/yourusername/HoneyUser.v2.git
+cd HoneyUser.v2
+python3 -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
-# Configuration
-The HoneyUser tool can be configured through the config.json file. Here is an example configuration:
+```
+##  Usage
 
-json
-Copy
-Edit
-{
-  "user": {
-    "name": "honeyuser",
-    "home": "/home/honeyuser"  # Path to user's home directory (Linux only)
-  },
-  "activity": {
-    "simulate_shell": true,
-    "simulate_browsing": true,
-    "interval_minutes": 1  # Activity interval in minutes
-  }
-}
-Configuration options:
-user:
+1. **Configure the system**  
+   Edit `config.yaml` to define the decoy user details and logging preferences.
 
-"name": Name of the decoy user (e.g., honeyuser).
+2. **Run the tool**  
+   ```bash
+   python honeyuser.py
+   ```
+3. **Simulated Activity**
 
-"home": Path to the user's home directory (only needed for Linux).
+The tool will:
 
-activity:
+-  Create a decoy user (`honeyuser`) if it doesn’t exist
+-  Simulate normal user behavior:
+  - Accessing files
+  - Populating bash history
+  - Creating browser artifacts
+-  Start monitoring for suspicious events (**Windows only**)
 
-"simulate_shell": Whether to simulate shell command history (True/False).
+4. **Exit**
 
-"simulate_browsing": Whether to simulate fake browsing activity (True/False).
+To stop the tool, type:
+```bash
+exit
+```
 
-"interval_minutes": Interval (in minutes) for how often user activity is simulated.
+##  Logs
 
-# Usage
-Run the tool:
+### 🪟 Windows
 
-bash
-Copy
-Edit
-python honeyuser.py
-Monitoring:
+- **`honeyuser_event_log.txt`**  
+  Captures WMI-based detections and simulated alerts.
 
-The script will continuously monitor for login attempts and activity related to the decoy user (honeyuser).
+- **`honeyuser.log`**  
+  General logging of all simulated behavior and activity.
 
-The activity will be simulated according to the configuration.
+---
 
-Logs:
+### 🐧 Linux
 
-Logs will be saved in the logs/ directory.
+- **`honeyuser.log`**  
+  Includes simulated activity and parsed `/var/log/auth.log` entries for the decoy user.
 
-The log file honeyuser_events.log will contain events, such as failed login attempts and system activities related to the honeyuser account.
+- **`/var/log/auth.log`** *(system file)*  
+  Real system events are parsed here if accessible.
 
-Viewing Logs: To view the logs, simply open the logs/honeyuser_events.log file. The file will contain entries similar to:
+>  **Note:** Logs are written in **JSON** or **plain text** based on the `config.yaml` setting.
 
-yaml
-Copy
-Edit
-2025-04-30 08:10:22 - [!] honeyuser triggered EventCode 4625: An account failed to log on.
-# Troubleshooting
-No events showing up in logs:
+---
 
-Ensure that the honeyuser account exists on the system.
+##  Features
 
-Ensure that logs are enabled for the appropriate system events.
+-  **Cross-platform decoy user deployment** (Windows + Linux)
+-  **Realistic simulated activity**, including:
+  - Shell usage
+  - Document access
+  - Cron job activity
+  - Browser history
+-  **Pluggable detection engine** (WMI-based for Windows)
+-  **Flexible logging system** with optional email alerts
+-  **Modular code structure**:
+  - `/activity`
+  - `/monitor`
+  - `/alert`
+  - `/osplatform`
 
-# Permissions issues:
 
-For Linux, the tool may require root access to read system logs (/var/log/auth.log).
+
