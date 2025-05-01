@@ -1,4 +1,3 @@
-
 import os
 import platform
 import time
@@ -16,7 +15,23 @@ from activity.simulator import simulate_activity
 from monitor.detector import Monitor
 from alert.logger import Logger
 from alert.emailer import Emailer
+import threading
 
+should_exit = threading.Event()
+
+def listen_for_exit():
+    while True:
+        cmd = input()
+        if cmd.strip().lower() == "exit":
+            print("[!] Exit command received. Stopping HoneyUser...")
+            should_exit.set()
+            break
+
+
+
+def start_activity_simulation(config):
+    while True:
+        simulate_activity(config)
 
 def get_platform_module():
     if system() == "Windows":
@@ -27,7 +42,6 @@ def get_platform_module():
         return linux
     else:
         raise NotImplementedError("Unsupported OS")
-
 
 def main():
     print("[+] Loading configuration...")
@@ -41,23 +55,27 @@ def main():
     else:
         print(f"[!] Decoy user '{config['user']['name']}' already exists.")
 
-    print("[+] Simulating user activity...")
-    simulate_activity(config)
-    print("[+] Activity simulation complete.")
-
-    print("[+] Starting event monitor...")
-    monitor = Monitor(config)
-    monitor.start()
-
     print("[+] Initializing alert/logging system...")
     logger = Logger(config)
     emailer = Emailer(config)
 
-    while True:
-        print("[+] Checking for events...")
+    print("[+] Starting event monitor...")
+    monitor = Monitor(config)
+
+    # Start the activity simulation in a background thread
+    activity_thread = threading.Thread(target=start_activity_simulation, args=(config,))
+    activity_thread.daemon = True  # Ensures the thread exits when the main program exits
+    activity_thread.start()
+
+    # Main event loop for monitoring and alerting
+    # Start listener thread
+    listener_thread = threading.Thread(target=listen_for_exit, daemon=True)
+    listener_thread.start()
+
+    print("[+] Monitoring events. Type 'exit' to stop.")
+    while not should_exit.is_set():
         events = monitor.check_events()
         for event in events:
-            #print(f"[!] Event detected: {event}")
             logger.log_event(event)
             if config['alerts']['email_enabled']:
                 print("[+] Sending alert email...")
@@ -66,3 +84,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
