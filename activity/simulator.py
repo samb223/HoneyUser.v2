@@ -1,6 +1,9 @@
 import os
 import time
 import platform
+import subprocess
+import ctypes
+import winreg
 
 def simulate_activity(config):
     system = platform.system()
@@ -8,6 +11,8 @@ def simulate_activity(config):
 
     print(f"[+] Starting activity simulation for decoy user: {username}")
     print(f"[+] Detected OS: {system}")
+    
+    # Determine the shell history file based on OS
     if system == "Windows":
         user_home = f"C:\\Users\\{username}"
         shell_history = os.path.join(user_home, "AppData", "Roaming", "Microsoft", "Windows", "PowerShell", "PSReadLine", "ConsoleHost_history.txt")
@@ -26,7 +31,7 @@ def simulate_activity(config):
         except Exception as e:
             print(f"[!] Failed to simulate shell activity: {e}")
 
-   # Simulate fake browsing activity
+    # Simulate fake browsing activity
     if config['activity']['simulate_browsing']:
         docs_dir = os.path.join(user_home, "Documents")
         print(f"[+] Simulating document activity in: {docs_dir}")
@@ -37,8 +42,6 @@ def simulate_activity(config):
             print("[+] Fake browsing document created.")
         except Exception as e:
             print(f"[!] Failed to create browsing artifact: {e}")
-
-    time.sleep(config['activity']['interval_minutes'] * 60)
+    
     wait_time = config['activity']['interval_minutes'] * 60
-    time.sleep(wait_time)
-    print("[+] Activity simulation complete.")
+    time.sleep(wait_time)  # Sleep for the interval time before simulating activity again
