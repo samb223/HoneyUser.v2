@@ -5,7 +5,7 @@ import time
 import yaml
 from platform import system
 from utils.helpers import load_config
-from platform import linux, windows, macos
+from osplatform import linux, windows, macos
 from activity.simulator import simulate_activity
 from monitor.detector import Monitor
 from alert.logger import Logger
