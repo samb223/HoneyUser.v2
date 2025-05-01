@@ -12,6 +12,11 @@ def simulate_activity(config):
 
     print(f"[+] Starting activity simulation for decoy user: {username}\n")
     print(f"[+] Detected OS: {system}\n")
+
+    # On Linux, set up a periodic cron job for ongoing activity
+    if system == "Linux":
+        script_path = os.path.abspath("honeyuser.py")  # Adjust path if needed
+        install_cron_job_as_user(script_path, username)
     
     # Determine the shell history file based on OS
     if system == "Windows":
@@ -46,3 +51,25 @@ def simulate_activity(config):
     
     wait_time = config['activity']['interval_minutes'] * 60
     time.sleep(wait_time)  # Sleep for the interval time before simulating activity again
+
+def install_cron_job_as_user(script_path, username):
+    if platform.system() != "Linux":
+        return
+
+    cron_line = f"*/5 * * * * /usr/bin/python3 {script_path} # HoneyUser cron job\n"
+    try:
+        existing_cron = subprocess.run(
+            ["crontab", "-u", username, "-l"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True
+        ).stdout
+
+        if cron_line.strip() not in existing_cron:
+            new_cron = existing_cron + cron_line
+            subprocess.run(["crontab", "-u", username, "-"], input=new_cron, text=True)
+            print(f"[+] Cron job installed for user '{username}'.")
+        else:
+            print("[*] Cron job already exists.")
+    except Exception as e:
+        print(f"[!] Failed to manage crontab: {e}")
