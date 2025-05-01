@@ -51,7 +51,7 @@ def main():
             logger.log_event(event)
             if config['alerts']['email_enabled']:
                 emailer.send_alert(event)
-        time.sleep(10)
+        time.sleep(2)
 
 
 if __name__ == "__main__":
