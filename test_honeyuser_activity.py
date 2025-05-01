@@ -39,7 +39,7 @@ def test_activity_simulation():
         'activity': {
             'simulate_shell': True,
             'simulate_browsing': True,
-            'interval_minutes': 1
+            'interval_minutes': .1
         }
     }
     
