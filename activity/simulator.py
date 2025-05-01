@@ -40,6 +40,5 @@ def simulate_activity(config):
 
     time.sleep(config['activity']['interval_minutes'] * 60)
     wait_time = config['activity']['interval_minutes'] * 60
-    print(f"[~] Sleeping for {config['activity']['interval_minutes']} minute(s) to simulate idle time.")
     time.sleep(wait_time)
     print("[+] Activity simulation complete.")
