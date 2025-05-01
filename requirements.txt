@@ -1,0 +1,4 @@
+pyyaml
+psutil
+pywin32 ; platform_system == "Windows"
+wmi ; platform_system == "Windows"
