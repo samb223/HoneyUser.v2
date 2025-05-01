@@ -20,39 +20,49 @@ from alert.emailer import Emailer
 
 def get_platform_module():
     if system() == "Windows":
+        print("[+] Detected platform: Windows")
         return windows
     elif system() == "Linux":
+        print("[+] Detected platform: Linux")
         return linux
     else:
         raise NotImplementedError("Unsupported OS")
 
 
 def main():
+    print("[+] Loading configuration...")
     config = load_config("config.yaml")
 
+    print("[+] Checking if decoy user exists...")
     # Create decoy user
     if not platform_module.user_exists(config['user']['name']):
+        print(f"[+] Creating decoy user: {config['user']['name']}")
         platform_module.create_user(config['user'])
+    else:
+        print(f"[!] Decoy user '{config['user']['name']}' already exists.")
 
-    # Simulate activity
+    print("[+] Simulating user activity...")
     simulate_activity(config)
+    print("[+] Activity simulation complete.")
 
-    # Monitor
+    print("[+] Starting event monitor...")
     monitor = Monitor(config)
     monitor.start()
 
-    # Alert/logging setup
+    print("[+] Initializing alert/logging system...")
     logger = Logger(config)
     emailer = Emailer(config)
 
     while True:
+        print("[+] Checking for events...")
         events = monitor.check_events()
         for event in events:
+            print(f"[!] Event detected: {event}")
             logger.log_event(event)
             if config['alerts']['email_enabled']:
+                print("[+] Sending alert email...")
                 emailer.send_alert(event)
-        time.sleep(2)
-
+        time.sleep(10)
 
 if __name__ == "__main__":
     main()
