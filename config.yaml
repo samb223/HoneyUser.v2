@@ -8,7 +8,7 @@ user:
 activity:
   simulate_browsing: true
   simulate_shell: true
-  interval_minutes: 15
+  interval_minutes: 1
 
 monitor:
   enabled: true
