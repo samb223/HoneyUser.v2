@@ -79,14 +79,14 @@ def main():
 
     print("\n[+] Monitoring events. Type 'exit' to stop.\n")
     while not should_exit.is_set():
-        events = monitor.check_events()
-        for event in events:
-            logger.log_event(event)
-            if config['alerts']['email_enabled']:
-                print("[+] Sending alert email...")
-                emailer.send_alert(event)
+        if monitor:
+            events = monitor.check_events()
+            for event in events or []:
+                logger.log_event(event)
+                if config['alerts']['email_enabled']:
+                    print("[+] Sending alert email...")
+                    emailer.send_alert(event)
         time.sleep(2)
-
 if __name__ == "__main__":
     main()
 
