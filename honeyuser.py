@@ -33,7 +33,6 @@ def get_platform_module():
 
 def main():
     config = load_config("config.yaml")
-    platform_module = get_platform_module()
 
     # Create decoy user
     if not platform_module.user_exists(config['user']['name']):
