@@ -10,9 +10,9 @@ HoneyUser is a cross-platform security deception tool that creates a **decoy use
 
 -  Creates a fake decoy user account (`honeyuser`)
 -  Simulates activity:
-  - Command-line history
-  - File/document creation
-  - Fake browser artifacts
+  -   Command-line history
+  -   File/document creation
+  -   Fake browser artifacts
 -  Logs system-level authentication and session events
 -  Alerts via logs when suspicious actions are detected (Windows only)
 -  `exit` command to stop the tool gracefully
@@ -24,8 +24,6 @@ HoneyUser is a cross-platform security deception tool that creates a **decoy use
 ```bash
 git clone https://github.com/yourusername/HoneyUser.v2.git
 cd HoneyUser.v2
-python3 -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
 ##  Usage
@@ -43,9 +41,9 @@ The tool will:
 
 -  Create a decoy user (`honeyuser`) if it doesn’t exist
 -  Simulate normal user behavior:
-  - Accessing files
-  - Populating bash history
-  - Creating browser artifacts
+  -   Accessing files
+  -   Populating bash history
+  -   Creating browser artifacts
 -  Start monitoring for suspicious events (**Windows only**)
 
 4. **Exit**
@@ -83,17 +81,17 @@ exit
 
 -  **Cross-platform decoy user deployment** (Windows + Linux)
 -  **Realistic simulated activity**, including:
-  - Shell usage
-  - Document access
-  - Cron job activity
-  - Browser history
+  -   Shell usage
+  -   Document access
+  -   Cron job activity
+  -   Browser history
 -  **Pluggable detection engine** (WMI-based for Windows)
 -  **Flexible logging system** with optional email alerts
 -  **Modular code structure**:
-  - `/activity`
-  - `/monitor`
-  - `/alert`
-  - `/osplatform`
+  -   `/activity`
+  -   `/monitor`
+  -   `/alert`
+  -   `/osplatform`
 
 
 
