@@ -40,7 +40,7 @@ class Monitor:
                 for event in c.query(query):
                     if self.username.lower() in str(event.InsertionStrings).lower():
                         evt_str = f"[!] {self.username} triggered EventCode {event.EventCode}: {event.Message}"
-                        print(evt_str)
+                        #print(evt_str)
                         events.append({"event": evt_str})
             except ImportError:
                 print("[!] 'wmi' module not found. Install it with: pip install wmi")
