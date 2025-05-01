@@ -72,7 +72,7 @@ def main():
     listener_thread = threading.Thread(target=listen_for_exit, daemon=True)
     listener_thread.start()
 
-    print("[+] Monitoring events. Type 'exit' to stop.")
+    print("\n[+] Monitoring events. Type 'exit' to stop.\n")
     while not should_exit.is_set():
         events = monitor.check_events()
         for event in events:
